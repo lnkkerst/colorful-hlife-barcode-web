@@ -22,6 +22,7 @@ export default function Home() {
   const {
     data: barcode,
     isLoading,
+    isValidating,
     mutate,
   } = useSWR(
     () => token && "token",
@@ -60,27 +61,32 @@ export default function Home() {
     <div>
       <div
         className={clsx(
-          "mt-8",
+          "mt-16",
           "flex flex-col items-center justify-center gap-6",
-          "min-h-[150px]",
         )}
       >
-        {isLoading ? (
+        {isLoading || !barcode ? (
           <span className="loading loading-spinner loading-lg"></span>
         ) : (
-          <div className="rounded overflow-hidden p-4" data-theme="light">
+          <div
+            className="rounded overflow-hidden p-2 w-[86%] aspect-video"
+            data-theme="light"
+          >
             <Barcode
               value={barcode!}
-              height={200}
+              height={150}
               displayValue={false}
               background="transparent"
               lineColor="currentColor"
+              // @ts-expect-error className type not forwarded
+              className="w-full h-full"
             ></Barcode>
           </div>
         )}
 
         <button
           className="btn btn-circle btn-ghost btn-lg"
+          disabled={isLoading || isValidating}
           onClick={e => {
             e.preventDefault();
             mutate();
