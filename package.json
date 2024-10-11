@@ -2,6 +2,8 @@
   "name": "colorful-hlife-barcode",
   "version": "0.1.0",
   "private": true,
+  "author": "lnkkerst <lnkkerst04@gmail.com> (https://lnkkerst.me/)",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
