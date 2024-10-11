@@ -68,7 +68,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
-      <div className="w-3/4 max-w-[540px]">
+      <div className="w-3/4 max-w-[360px]">
         <form onSubmit={onSubmit}>
           <label className="form-control">
             <label

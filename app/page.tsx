@@ -69,7 +69,9 @@ export default function Home() {
           <span className="loading loading-spinner loading-lg"></span>
         ) : (
           <div
-            className="rounded overflow-hidden p-2 w-full dark:w-[86%] aspect-video"
+            className={clsx(
+              "rounded overflow-hidden p-2 w-full dark:w-[86%] max-w-[540px] aspect-video",
+            )}
             data-theme="light"
           >
             <Barcode
