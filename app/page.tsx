@@ -61,7 +61,7 @@ export default function Home() {
     <div>
       <div
         className={clsx(
-          "mt-16",
+          "mt-12",
           "flex flex-col items-center justify-center gap-6",
         )}
       >
