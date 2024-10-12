@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { MdAccountBox, MdPassword } from "react-icons/md";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { tokenStorageKey } from "@/utils/constants";
 
 const LoginSchema = z.object({
   username: z.string().min(1),
@@ -48,21 +49,27 @@ export default function LoginPage() {
       },
     );
 
+    const json = await response.json();
+
     const result = z
       .object({
         body: z.object({
           accessToken: z.string(),
         }),
       })
-      .safeParse(await response.json());
+      .safeParse(json);
 
     if (!result.success) {
-      setErrorMessage("登录失败");
+      if (json?.code === 10005) {
+        setErrorMessage("登录失败，账号或密码错误");
+      } else {
+        setErrorMessage("登录失败，未知错误");
+      }
       setIsLoggingIn(false);
       return;
     }
 
-    localStorage.setItem("hlife365-token", result.data.body.accessToken);
+    localStorage.setItem(tokenStorageKey, result.data.body.accessToken);
     router.replace("/");
   });
 

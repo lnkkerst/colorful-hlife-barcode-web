@@ -7,14 +7,17 @@ import useSWR from "swr";
 import Barcode from "react-barcode";
 import clsx from "clsx";
 import { MdRefresh } from "react-icons/md";
+import { tokenStorageKey } from "@/utils/constants";
+import { LogoutButton } from "./components/logout";
 
 export default function Home() {
   const router = useRouter();
   const [token, setToken] = useState<string>("");
   useEffect(() => {
-    const result = z.string().safeParse(localStorage.getItem("hlife365-token"));
+    const result = z.string().safeParse(localStorage.getItem(tokenStorageKey));
     if (!result.success) {
-      return router.replace("/login");
+      router.replace("/login");
+      return;
     }
     setToken(result.data);
   }, [router]);
@@ -58,10 +61,15 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div
+      className={clsx(
+        "min-h-dvh",
+        "flex flex-col items-center justify-between",
+      )}
+    >
       <div
         className={clsx(
-          "mt-12",
+          "mt-12 w-full",
           "flex flex-col items-center justify-center gap-6",
         )}
       >
@@ -97,6 +105,12 @@ export default function Home() {
           <MdRefresh className="w-8 h-8" />
         </button>
       </div>
+
+      {token && (
+        <div className={clsx("flex items-center justify-end w-full p-6")}>
+          <LogoutButton />
+        </div>
+      )}
     </div>
   );
 }
