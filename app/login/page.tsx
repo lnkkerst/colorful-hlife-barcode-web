@@ -132,6 +132,9 @@ export default function LoginPage() {
             disabled={isLoggingIn}
           >
             登录
+            {isLoggingIn && (
+              <span className="loading loading-spinner loading-xs"></span>
+            )}
           </button>
 
           <div className="text-error text-center text-sm h-8 mt-4">
