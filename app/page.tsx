@@ -9,9 +9,12 @@ import clsx from "clsx";
 import { MdRefresh } from "react-icons/md";
 import { tokenStorageKey } from "@/utils/constants";
 import { LogoutButton } from "./components/logout";
+import { useAtom } from "jotai";
+import { lastBarcodeAtom } from "@/atoms";
 
 export default function Home() {
   const router = useRouter();
+  const [lastBarcode, setLastBarcode] = useAtom(lastBarcodeAtom);
   const [token, setToken] = useState<string>("");
   useEffect(() => {
     const result = z.string().safeParse(localStorage.getItem(tokenStorageKey));
@@ -56,8 +59,15 @@ export default function Home() {
         return router.replace("/login");
       }
 
-      return result.data.body.idbar;
+      const barcode = result.data.body.idbar;
+      setLastBarcode({
+        content: barcode,
+        updatedAt: Date.now(),
+      });
+
+      return barcode;
     },
+    { fallbackData: lastBarcode.content },
   );
 
   return (
@@ -73,7 +83,7 @@ export default function Home() {
           "flex flex-col items-center justify-center gap-6",
         )}
       >
-        {isLoading || !barcode ? (
+        {!barcode ? (
           <span className="loading loading-spinner loading-lg"></span>
         ) : (
           <div
@@ -102,8 +112,25 @@ export default function Home() {
             mutate();
           }}
         >
-          <MdRefresh className="w-8 h-8" />
+          {isLoading || isValidating ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <MdRefresh className="size-8" />
+          )}
         </button>
+
+        {isLoading && !!barcode && (
+          <div className="text-center text-warning px-4">
+            目前显示的条码为上次获取的内容，新的条码正在赶来的路上...
+          </div>
+        )}
+        <div className="text-center px-4 text-sm">
+          <p>
+            TIPS: 可以把本网站添加到桌面，更加方便快捷。支持 PWA
+            的浏览器可以将此网站作为 App 安装
+          </p>
+          <p>{"～(∠・ω< )⌒★"}</p>
+        </div>
       </div>
 
       {token && (
