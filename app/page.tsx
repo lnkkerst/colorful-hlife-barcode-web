@@ -121,7 +121,9 @@ export default function Home() {
 
         {isLoading && !!barcode && (
           <div className="text-center text-warning px-4">
-            目前显示的条码为上次获取的内容，新的条码正在赶来的路上...
+            目前显示的条码为上次获取的内容，
+            <span className="text-error">可能已经过期</span>
+            。新的条码正在赶来的路上...
           </div>
         )}
         <div className="text-center px-4 text-sm">
