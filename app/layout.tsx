@@ -16,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="zh-cn">
       <body>
-        <ClientProviders>{children}</ClientProviders>
-        <GlobalEffect />
+        <ClientProviders>
+          <GlobalEffect />
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

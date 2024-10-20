@@ -10,11 +10,12 @@ import { MdRefresh } from "react-icons/md";
 import { tokenStorageKey } from "@/utils/constants";
 import { LogoutButton } from "./components/logout";
 import { useAtom } from "jotai";
-import { lastBarcodeAtom } from "@/atoms";
+import { lastBarcodeAtom, showTipsAtom } from "@/atoms";
 
 export default function Home() {
   const router = useRouter();
   const [lastBarcode, setLastBarcode] = useAtom(lastBarcodeAtom);
+  const [showTips, setShowTips] = useAtom(showTipsAtom);
   const [token, setToken] = useState<string>("");
   useEffect(() => {
     const result = z.string().safeParse(localStorage.getItem(tokenStorageKey));
@@ -120,19 +121,32 @@ export default function Home() {
         </button>
 
         {isLoading && !!barcode && (
-          <div className="text-center text-warning px-4">
+          <div className="text-center text-warning px-4 text-sm">
             目前显示的条码为上次获取的内容，
             <span className="text-error">可能已经过期</span>
             。新的条码正在赶来的路上...
           </div>
         )}
-        <div className="text-center px-4 text-sm">
-          <p>
-            TIPS: 可以把本网站添加到桌面，更加方便快捷。支持 PWA
-            的浏览器可以将此网站作为 App 安装
-          </p>
-          <p>{"～(∠・ω< )⌒★"}</p>
-        </div>
+        {showTips === "yes" && (
+          <div className="text-center px-4 text-sm">
+            <p>
+              TIPS: 可以把本网站添加到桌面，更加方便快捷。支持 PWA
+              的浏览器可以将此网站作为 App 安装
+            </p>
+            <p>
+              {"～(∠・ω< )⌒★   "}
+              <button
+                className="link cursor-pointer"
+                onClick={e => {
+                  e.preventDefault();
+                  setShowTips("no");
+                }}
+              >
+                {"不再显示"}
+              </button>
+            </p>
+          </div>
+        )}
       </div>
 
       {token && (

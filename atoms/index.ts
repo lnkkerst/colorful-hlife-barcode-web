@@ -10,3 +10,10 @@ export const lastBarcodeAtom = atomWithStorage<{
   content: "",
   updatedAt: 0,
 });
+
+export const showTipsAtom = atomWithStorage<"yes" | "no" | "not-sure">(
+  "show-tips",
+  "not-sure",
+  undefined,
+  { getOnInit: true },
+);
